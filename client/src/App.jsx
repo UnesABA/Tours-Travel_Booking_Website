@@ -1,12 +1,14 @@
-
+import { BrowserRouter } from "react-router-dom"
+import Layout from "./components/layout/Layout"
+import './index.css'
 
 function App() {
 
   return (
-    <>
-    <div>Younes AIT BEN ALI</div>
-    </>
-  )
+    <BrowserRouter>
+      <Layout />
+    </BrowserRouter>
+  ) 
 }
 
 export default App
