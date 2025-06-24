@@ -9,6 +9,7 @@ import SearchBar               from "../shared/SearchBar"
 import ServicesList            from "../services/ServicesList"
 import FeaturedTourList        from "../components/featured-tours/FeaturedTourList"
 import "../styles/home.css"
+import MasonryImagesGallery from "../components/image-gallery/MasonryImagesGallery"
 
 const Home = () => {
   return (
@@ -56,7 +57,6 @@ const Home = () => {
         </Row>
       </Container>
       {/* ===================== Hero Section ===================== */}
-
       <section>
         <Container>
           <Row>
@@ -128,6 +128,23 @@ const Home = () => {
         </Container>
       </section>
       {/* ===================== Experience Section ===================== */}
+      {/* ===================== Gallery Section ===================== */}
+      <section>
+        <Container>
+          <Row>
+            <Col lg="12">
+              <Subtitle subtitle={"Gallery"}/>
+              <h2 className="gallery__title">
+                Visit our customers tour gallery
+              </h2>
+            </Col>
+            <Col lg="12">
+              <MasonryImagesGallery />
+            </Col>
+          </Row>
+        </Container>
+      </section>
+      {/* ===================== Gallery Section ===================== */}
     </>
   )
 }
