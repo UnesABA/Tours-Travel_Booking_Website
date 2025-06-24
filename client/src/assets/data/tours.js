@@ -15,12 +15,7 @@ const tours = [
     price: 99,
     maxGroupSize: 10,
     desc: "this is the description",
-    reviews: [
-      {
-        name: "jhon doe",
-        rating: 4.6,
-      },
-    ],
+    reviews: [],
     avgRating: 4.5,
     photo: tourImg01,
     featured: true,
@@ -33,12 +28,7 @@ const tours = [
     price: 99,
     maxGroupSize: 8,
     desc: "this is the description",
-    reviews: [
-      {
-        name: "jhon doe",
-        rating: 4.6,
-      },
-    ],
+    reviews: [],
     avgRating: 4.5,
     photo: tourImg02,
     featured: true,
@@ -92,6 +82,10 @@ const tours = [
         name: "jhon doe",
         rating: 4.6,
       },
+      {
+        name: "Younes AIT BEN ALI",
+        rating: 4.7,
+      },
     ],
     avgRating: 4.5,
     photo: tourImg05,
@@ -123,12 +117,7 @@ const tours = [
     price: 99,
     maxGroupSize: 8,
     desc: "this is the description",
-    reviews: [
-      {
-        name: "jhon doe",
-        rating: 4.6,
-      },
-    ],
+    reviews: [],
     avgRating: 4.5,
     photo: tourImg07,
     featured: false,
