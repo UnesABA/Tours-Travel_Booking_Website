@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 import { useRef, useEffect }      from "react"
 import { Container, Row, Button } from "reactstrap"
 import { NavLink, Link }          from "react-router-dom"
 import logo                       from "../../assets/images/logo.png"
-=======
-import { useRef, useEffect } from "react"
-import { Container, Row, Button } from "reactstrap"
-import { NavLink, Link } from "react-router-dom"
-import logo from "../../assets/images/logo.png"
->>>>>>> feature_header
 import "./header.css"
 
 const nav__links = [
