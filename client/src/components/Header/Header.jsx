@@ -1,7 +1,8 @@
-import { Container, Row, Button } from "reactstrap";
-import { NavLink, Link } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
-import "./header.css";
+import { useRef, useEffect } from "react"
+import { Container, Row, Button } from "reactstrap"
+import { NavLink, Link } from "react-router-dom"
+import logo from "../../assets/images/logo.png"
+import "./header.css"
 
 const nav__links = [
   {
@@ -16,11 +17,11 @@ const nav__links = [
     path: "/tours",
     display: "Tours",
   },
-];
+]
 
 const Header = () => {
   return (
-    <header className="header">
+    <header className="header" >
       <Container>
         <Row>
           <div className="nav__wrapper d-flex align-items-center justify-content-between">
@@ -50,12 +51,12 @@ const Header = () => {
 
             <div className="nav__right d-flex align-items-center gap-4">
               <div className="nav__btns d-flex align-items-center gap-4">
-                <button className="btn secondary__btn">
+                <Button className="btn secondary__btn">
                   <Link to="/login">Login</Link>
-                </button>
-                <button className="btn primary__btn">
+                </Button>
+                <Button className="btn primary__btn">
                   <Link to="/register">Register</Link>
-                </button>
+                </Button>
 
                 <span className="mobile__menu">
                   <i className="ri-menu-line"></i>
@@ -66,7 +67,7 @@ const Header = () => {
         </Row>
       </Container>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
