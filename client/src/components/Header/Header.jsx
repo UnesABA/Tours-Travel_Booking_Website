@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import { useRef, useEffect }      from "react"
 import { Container, Row, Button } from "reactstrap"
 import { NavLink, Link }          from "react-router-dom"
 import logo                       from "../../assets/images/logo.png"
+=======
+import { useRef, useEffect } from "react"
+import { Container, Row, Button } from "reactstrap"
+import { NavLink, Link } from "react-router-dom"
+import logo from "../../assets/images/logo.png"
+>>>>>>> feature_header
 import "./header.css"
 
 const nav__links = [
@@ -39,7 +46,7 @@ const Header = () => {
   })
   
   return (
-    <header className="header">
+    <header className="header" >
       <Container>
         <Row>
           <div className="nav__wrapper d-flex align-items-center justify-content-between">
