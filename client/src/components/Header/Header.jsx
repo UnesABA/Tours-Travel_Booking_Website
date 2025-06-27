@@ -1,8 +1,8 @@
-import { useRef, useEffect }      from "react"
-import { Container, Row, Button } from "reactstrap"
-import { NavLink, Link }          from "react-router-dom"
-import logo                       from "../../assets/images/logo.png"
-import "./header.css"
+import { useRef, useEffect } from "react";
+import { Container, Row, Button } from "reactstrap";
+import { NavLink, Link } from "react-router-dom";
+import logo from "../../assets/images/logo.png";
+import "./header.css";
 
 const nav__links = [
   {
@@ -17,38 +17,37 @@ const nav__links = [
     path: "/tours",
     display: "Tours",
   },
-]
+];
 
 const Header = () => {
-  const headerRef = useRef(null)
+  const headerRef = useRef(null);
 
-  const stickyHeaderFunction = () =>{
-    window.addEventListener("scroll", () =>{
-      if(document.body.scrollTop > 80 || document.documentElement.scrollTop > 80){
-        headerRef.current.classList.add(".sticky__header")
-      }else{
-        headerRef.current.classList.remove(".sticky__header")
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        document.body.scrollTop > 80 ||
+        document.documentElement.scrollTop > 80
+      ) {
+        headerRef.current?.classList.add("sticky__header");
+      } else {
+        headerRef.current?.classList.remove("sticky__header");
       }
-    })
-  }
+    };
 
-  useEffect(() =>{
-    stickyHeaderFunction()
+    window.addEventListener("scroll", handleScroll);
 
-    return window.removeEventListener("scroll", stickyHeaderFunction)
-  })
-  
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="header" >
+    <header className="header" ref={headerRef}>
       <Container>
         <Row>
           <div className="nav__wrapper d-flex align-items-center justify-content-between">
-            {/* ====================LOGO==================== */}
             <div className="logo">
               <img src={logo} />
             </div>
-            {/* ====================LOGO END==================== */}
-            {/* ====================MENU==================== */}
+
             <div className="navigation">
               <ul className="menu d-flex align-items-center gap-5">
                 {nav__links.map((link, index) => (
@@ -65,7 +64,6 @@ const Header = () => {
                 ))}
               </ul>
             </div>
-            {/* ====================MENU END==================== */}
 
             <div className="nav__right d-flex align-items-center gap-4">
               <div className="nav__btns d-flex align-items-center gap-4">
@@ -85,7 +83,7 @@ const Header = () => {
         </Row>
       </Container>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
