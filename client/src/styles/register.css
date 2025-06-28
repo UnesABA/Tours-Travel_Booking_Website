@@ -1,29 +1,29 @@
-.login__img{
+.register__img{
   width: 60%;
   text-align: center;
 }
 
-.login__img img{
+.register__img img{
   width: 70%;
   object-fit: contain;
 }
 
-.login__form{
+.register__form{
   padding: 50px;
   background: var(--secondary-color);
   position: relative;
 }
 
-.login__container p a{
+.register__container p a{
   color: blue;
 }
 
-.login__container{
+.register__container{
   box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
   margin-top: 100px;
 }
 
-.login__form .user{
+.register__form .user{
   width: 80px;
   height: 80px;
   position: absolute;
@@ -32,21 +32,21 @@
   transform: translate(-50%, -9%);
 }
 
-.login__form .user img{
+.register__form .user img{
   width: 100%;
 }
 
-.login__form h2{
+.register__form h2{
   color: #fff;
   text-align: center;
   margin-bottom: 2rem; 
 }
 
-.login__form{
+.register__form{
   width: 40%;
 }
 
-.login__form input{
+.register__form input{
   width: 100%;
   padding: 0.5rem 1rem;
   border-radius: 5px;
@@ -55,7 +55,7 @@
   color: var(--heading-color);
 }
 
-.login__form input:focus{
+.register__form input:focus{
   outline: none;
 }
 
@@ -65,14 +65,14 @@
   color: #fff !important;
 }
 
-.login__form p{
+.register__form p{
   font-size: 0.9rem;
   color: #fff !important;
   text-align: center;
   margin-top: 1.5rem;
 }
 
-.login__form p a{
+.register__form p a{
   color: var(--heading-color);
   text-decoration: none;
   margin-left: 5px;

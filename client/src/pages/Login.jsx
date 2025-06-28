@@ -14,8 +14,8 @@ const Login = () => {
 
   const handleChange = (event) => {
 
-    setCredentials(prev => [...prev], [event.target.id]= [event.target.value])
-  };
+    setCredentials( prev => ({ ...prev, [event.target.id]: event.target.value}))
+  }
 
   const handleClick = (event) =>{
     event.preventDefault()
