@@ -3,6 +3,8 @@ import dotenv       from "dotenv"
 import mongoose     from "mongoose"
 import cors         from "cors"
 import cookieParser from "cookie-parser"
+import tourRoute    from "./routes/tours.js"
+
 
 dotenv.config()
 const app = express()
@@ -14,10 +16,10 @@ const connect = async() =>{
   try {
     await mongoose.connect(process.env.MONGO_URI)
 
-    console.log("MongoDB database is connected")
+    console.log("MongoDB database connected")
   } catch (error) {
     
-    console.log("MongoDB database connection failed", )
+    console.log("MongoDB database connection failed")
   }
 }
 
@@ -25,6 +27,7 @@ const connect = async() =>{
 app.use(express.json())
 app.use(cors())
 app.use(cookieParser())
+app.use("/tours", tourRoute)
 
 app.listen(port, () =>{
   connect()
