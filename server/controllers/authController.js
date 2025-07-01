@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken"
 // User registration
 export const register = async (req, res) => {
   try {
-    //hashing password 
+    //hashing password
     const salt = bcrypt.genSaltSync(10)
     const hash = bcrypt.hashSync(req.body.password, salt)
 
@@ -32,6 +32,52 @@ export const register = async (req, res) => {
 
 // User login
 export const login = async (req, res) => {
+  const email = req.body.email
+
   try {
-  } catch (error) {}
-}
+    const user = await User.findOne({email})
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      })
+    }
+
+    const checkCorrectPassword = await bcrypt.compare(req.body.password, user.password)
+
+    if (!checkCorrectPassword) {
+      return res.status(401).json({
+        success: false,
+        message: "Incorrect email or password",
+      })
+    }
+
+    const { password, role, ...rest } = user._doc
+
+    //create jwt token
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: "15d" }
+    )
+
+    //set token in the browser cookies and send the response to the client
+    res
+      .cookie("accessToken", token, {
+        httpOnly: true,
+        expires: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
+      })
+      .status(200)
+      .json({
+        success: true,
+        message: "Successfully Logged in",
+        data: { ...rest },
+      })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to login",
+    })
+  }
+} 

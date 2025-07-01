@@ -113,7 +113,7 @@ export const getTourBySearch = async (req, res) => {
   const city = new RegExp(req.query.city, "i")
   const distance = parseInt(req.query.distance)
   const maxGroupSize = parseInt(req.query.maxGroupSize)
-  
+
   try {
     // gte means greather than or equal
     const tours = await Tour.find({
@@ -126,12 +126,13 @@ export const getTourBySearch = async (req, res) => {
       message: "Matching tours retrieved successfully.",
       data: tours,
     })
-  } catch (error) {}
-  return res.status(500).json({
-    success: false,
-    message:
-    "No tours found matching your criteria. Please refine your search or try again later.",
-  })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message:
+        "No tours found matching your criteria. Please refine your search or try again later.",
+    })
+  }
 }
 
 //get featured tours
@@ -155,20 +156,17 @@ export const getFeaturedTours = async (req, res) => {
 }
 
 // get tour counts
-
-export const getToursCount = async (req, res) =>{
+export const getToursCount = async (req, res) => {
   try {
     const tourCount = await Tour.estimatedDocumentCount()
     return res.status(200).json({
       success: true,
       data: tourCount,
     })
-    
   } catch (error) {
     return res.status(500).json({
       success: false,
       message: "Failed to fetch",
     })
-    
   }
 }
