@@ -8,14 +8,14 @@ const useFetch = (url) => {
   useEffect(() =>{
     const fetchData = async ()=>{
       setLoading(true)
-      try {
+      try { 
         const res = await fetch(url)
         if(!res.ok){
           setError("Failed to fetch")
           alert("Failed to fetch")
         }
 
-        const resultat = res.json()
+        const resultat = await res.json()
         setData(resultat.data)
         
       } catch (error) {
