@@ -1,26 +1,54 @@
-import { Container, Row, Col, Form, FormGroup, Button } from "reactstrap";
-import { Link, useNavigate } from "react-router-dom";
-import loginImg from "../assets/images/login.png";
-import userIcon from "../assets/images/user.png";
-import "../styles/login.css";
-import { useState } from "react";
+import { useContext, useState } from "react"
+import { Container, Row, Col, Form, FormGroup, Button } from "reactstrap"
+import { Link, useNavigate } from "react-router-dom"
+import loginImg from "../assets/images/login.png"
+import userIcon from "../assets/images/user.png"
+import { AuthContext } from "../context/AuthContext"
+import { BASE_URL } from "../utils/Config"
+import "../styles/login.css"
 
 const Login = () => {
   const navigate = useNavigate()
-  const[credentials, setCredentials] = useState({
+  const [credentials, setCredentials] = useState({
     email: undefined,
-    password: undefined
+    password: undefined,
   })
 
-  const handleChange = (event) => {
+  const { dispatch, loading } = useContext(AuthContext)
 
-    setCredentials( prev => ({ ...prev, [event.target.id]: event.target.value}))
+  const handleChange = (event) => {
+    setCredentials((prev) => ({
+      ...prev,
+      [event.target.id]: event.target.value,
+    }))
   }
 
-  const handleClick = (event) =>{
+  const handleClick = async (event) => {
     event.preventDefault()
+    dispatch({ type: "LOGIN_START" })
 
-    // navigate("/home")
+    try {
+      const res = await fetch(`${BASE_URL}/auth/login`, {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(credentials),
+      })
+
+      const result = await res.json()
+
+      if (!res.ok) {
+        return alert(result.message)
+      }
+
+      dispatch({ type: "LOGIN_SUCCESS", payload: result.data })
+      navigate("/")
+    } catch (error) {
+      dispatch({ type: "LOGIN_FAILURE", payload: error.message })
+      alert(error.message)
+    }
   }
 
   return (
@@ -62,8 +90,9 @@ const Login = () => {
                   <Button
                     className="auth__btn btn secondary__btn"
                     type="submit"
+                    disabled={loading}
                   >
-                    Login
+                    {loading ? "Loading..." : "Login"}
                   </Button>
                 </Form>
 
@@ -76,7 +105,7 @@ const Login = () => {
         </Row>
       </Container>
     </section>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

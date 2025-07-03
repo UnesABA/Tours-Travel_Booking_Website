@@ -1,8 +1,10 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { Container, Row, Col, Form, FormGroup, Button } from "reactstrap"
 import { Link, useNavigate } from "react-router-dom"
 import registerImg from "../assets/images/register.png"
 import userIcon from "../assets/images/user.png"
+import { AuthContext } from "../context/AuthContext"
+import { BASE_URL } from "../utils/Config"
 import "../styles/register.css"
 
 const Register = () => {
@@ -13,15 +15,35 @@ const Register = () => {
     username: undefined,
   })
 
+  const {dispatch} = useContext(AuthContext)
+
   const handleChange = (event) => {
 
     setCredentials( prev => ({ ...prev, [event.target.id]: event.target.value}))
   }
 
-  const handleClick = (event) =>{
+  const handleClick = async (event) =>{
     event.preventDefault()
 
-    // navigate("/home")
+    try {
+      const res = await fetch(`${BASE_URL}/auth/register`,{
+        method: "post",
+        headers: {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify(credentials)
+      })
+      const result = await res.json()
+
+      if(!res.ok){
+        return alert(result.message)
+      }
+      dispatch({type: "REGISTER_SUCCESS"})
+      navigate("/login")
+      
+    } catch (error) {
+      alert(error.message)
+    }
   }
 
   return (
