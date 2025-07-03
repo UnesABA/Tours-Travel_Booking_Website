@@ -1,20 +1,31 @@
 import { useRef }               from "react"
 import { Col, Form, FormGroup } from "reactstrap"
+import { BASE_URL }             from "./../utils/Config"
+import { useNavigate }          from "react-router-dom"
 import "./search-bar.css"
 
 const SearchBar = () => {
   const locationRef     = useRef("")
   const distanceRef     = useRef(0)
-  const maxTravelersRef = useRef(0)
+  const maxGroupSizeRef = useRef(0)
+  const navigate = useNavigate()
 
-  const searchHandler = () => {
+  const searchHandler = async () => {
     const location     = locationRef.current.value
     const distance     = distanceRef.current.value
-    const maxTravelers = maxTravelersRef.current.value
+    const maxGroupSize = maxGroupSizeRef.current.value
 
-    if(location === "" || distance === "" || maxTravelers === ""){
+    if(location === "" || distance === "" || maxGroupSize === ""){
       return alert("All the fields are required !")
     }
+
+    const res = await fetch(`${BASE_URL}/tours/search/getTourBySearch?city=${location}&distance=${distance}&maxGroupSize=${maxGroupSize}`)
+
+    if(!res.ok){
+      alert("Something went wrong!")
+    }
+    const resultat = await res.json()
+    navigate(`/tours/search?city=${location}&distance=${distance}&maxGroupSize=${maxGroupSize}`, {state: resultat.data})
   }
 
   return (
@@ -53,7 +64,7 @@ const SearchBar = () => {
             </span>
             <div>
               <h6>Max People</h6>
-              <input type="number" placeholder="0" ref={maxTravelersRef} />
+              <input type="number" placeholder="0" ref={maxGroupSizeRef} />
             </div>
           </FormGroup>
 
