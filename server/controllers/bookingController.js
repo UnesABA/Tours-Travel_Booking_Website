@@ -12,9 +12,11 @@ export const createBooking = async (req, res) => {
       data: savedBooking,
     })
   } catch (error) {
+    console.error("Create Booking Error:", error.message)
     return res.status(500).json({
       success: false,
       message: "Something went wrong. Unable to complete the booking.",
+      error: error.message
     })
   }
 }

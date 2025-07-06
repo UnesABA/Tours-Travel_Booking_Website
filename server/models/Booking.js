@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 const bookingSchema = new mongoose.Schema(
   {
@@ -10,11 +10,11 @@ const bookingSchema = new mongoose.Schema(
     },
     tourName: {
       type: String,
-      required: true
+      required: true,
     },
     fullName: {
       type: String,
-      required: true
+      required: true,
     },
     guestSize: {
       type: Number,
@@ -26,10 +26,11 @@ const bookingSchema = new mongoose.Schema(
     },
     bookAt: {
       type: Date,
-      required: true,
+      required: false,
+      default: Date.now,
     },
   },
   { timestamps: true }
-)
+);
 
-export default mongoose.model("Booking", bookingSchema)
+export default mongoose.model("Booking", bookingSchema);

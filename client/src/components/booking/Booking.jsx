@@ -1,38 +1,64 @@
-import { Form, FormGroup, ListGroup, ListGroupItem, Button } from "reactstrap";
-import "./booking.css";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { Form, FormGroup, ListGroup, ListGroupItem, Button } from "reactstrap"
+import "./booking.css"
+import { useContext, useState } from "react"
+import { useNavigate, useParams } from "react-router-dom"
+import { AuthContext } from "../../context/AuthContext"
+import { BASE_URL } from "../../utils/Config"
 
 const Booking = ({ tour, avgRating }) => {
-  const { price, reviews } = tour;
+  const { user }= useContext(AuthContext)
+  const { price, reviews, title } = tour
   const navigate = useNavigate()
 
-  const [credentials, setCredentials] = useState({
-    userId: "01",
-    userEmail: "unesaitbenali@gmail.com",
+  const [booking, setBooking] = useState({
+    userId: user && user._id,
+    userEmail: user && user.email,
+    tourName: title,
     fullName: "Younes AIT BEN ALI",
     phone: "+212610408288",
     guestSize: "1",
     bookedAt: "",
-  });
+  })
 
   const handleChange = (event) => {
-    setCredentials((prev) => ({
+    setBooking((prev) => ({
       ...prev,
       [event.target.id]: event.target.value,
-    }));
-  };
+    }))
+  }
 
-  const serviceFee = 58;
+  const serviceFee = 10
   const totalAmount =
-    Number(price) * Number(credentials.guestSize) + Number(serviceFee);
+    Number(price) * Number(booking.guestSize) + Number(serviceFee)
 
-  const handleClick = (event) => {
-    event.preventDefault();
+  const handleClick = async (event) => {
+    event.preventDefault()
+    console.log(booking)
+    
+    try {
+      if(!user){
+        return alert("Please Sign in")
+      }
+      const res = await fetch(`${BASE_URL}/booking`,{
+        method: "post",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include", 
+        body: JSON.stringify(booking)
+      })
+
+      const result = await res.json()
+      if(!res.ok){
+        return alert(result.message)
+      }
+      
+    } catch (error) {
+      alert(error.message)
+    }
 
     navigate("/thank-you")
-  };
+  }
 
   return (
     <div className="booking">
@@ -110,7 +136,7 @@ const Booking = ({ tour, avgRating }) => {
         </Button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Booking;
+export default Booking

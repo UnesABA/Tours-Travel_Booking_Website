@@ -1,8 +1,9 @@
-import { useRef, useEffect } from "react";
-import { Container, Row, Button } from "reactstrap";
-import { NavLink, Link } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
-import "./header.css";
+import { useRef, useEffect, useContext } from "react"
+import { Container, Row, Button } from "reactstrap"
+import { NavLink, Link, useNavigate } from "react-router-dom"
+import logo from "../../assets/images/logo.png"
+import { AuthContext } from "./../../context/AuthContext"
+import "./header.css"
 
 const nav__links = [
   {
@@ -17,10 +18,18 @@ const nav__links = [
     path: "/tours",
     display: "Tours",
   },
-];
+]
+
 
 const Header = () => {
-  const headerRef = useRef(null);
+  const navigate = useNavigate()
+  const { user, dispatch } = useContext(AuthContext)
+  const headerRef = useRef(null)
+  
+  const logout = () => {
+    dispatch({ type: "LOGOUT" })
+    navigate("/")
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,16 +37,16 @@ const Header = () => {
         document.body.scrollTop > 80 ||
         document.documentElement.scrollTop > 80
       ) {
-        headerRef.current?.classList.add("sticky__header");
+        headerRef.current?.classList.add("sticky__header")
       } else {
-        headerRef.current?.classList.remove("sticky__header");
+        headerRef.current?.classList.remove("sticky__header")
       }
-    };
+    }
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll)
 
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   return (
     <header className="header" ref={headerRef}>
@@ -47,7 +56,6 @@ const Header = () => {
             <div className="logo">
               <img src={logo} />
             </div>
-
             <div className="navigation">
               <ul className="menu d-flex align-items-center gap-5">
                 {nav__links.map((link, index) => (
@@ -64,15 +72,25 @@ const Header = () => {
                 ))}
               </ul>
             </div>
-
             <div className="nav__right d-flex align-items-center gap-4">
               <div className="nav__btns d-flex align-items-center gap-4">
-                <Button className="btn secondary__btn">
-                  <Link to="/login">Login</Link>
-                </Button>
-                <Button className="btn primary__btn">
-                  <Link to="/register">Register</Link>
-                </Button>
+                {user ? (
+                  <>
+                    <h5 className="mb-0">{user.username}</h5>
+                    <Button className="btn btn-dark" onClick={logout}>
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button className="btn secondary__btn">
+                      <Link to="/login">Login</Link>
+                    </Button>
+                    <Button className="btn primary__btn">
+                      <Link to="/register">Register</Link>
+                    </Button>
+                  </>
+                )}
 
                 <span className="mobile__menu">
                   <i className="ri-menu-line"></i>
@@ -83,7 +101,7 @@ const Header = () => {
         </Row>
       </Container>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

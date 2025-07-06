@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useContext } from "react"
 import { Container, Row, Col, Form, ListGroup } from "reactstrap"
 import { useParams } from "react-router-dom"
 import calculateAvgRating from "../utils/AvgRating"
@@ -9,12 +9,14 @@ import Newsletter from "../shared/Newsletter"
 import useFetch from "../hooks/useFetch"
 import { BASE_URL } from "../utils/Config"
 import { ClipLoader } from "react-spinners"
+import { AuthContext } from "../context/AuthContext"
 import "../styles/tour-details.css"
 
 const TourDetails = () => {
   const { id } = useParams()
   const reviewMsgRef = useRef("")
   const [tourRating, setTourRating] = useState(null)
+  const { user } = useContext(AuthContext)
 
   const { data: tour, loading, error } = useFetch(`${BASE_URL}/tours/${id}`)
 
@@ -32,10 +34,42 @@ const TourDetails = () => {
 
   const { totalRating, avgRating } = calculateAvgRating(reviews)
 
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault()
-
     const reviewText = reviewMsgRef.current.value
+
+    try {
+      if (!user) {
+        alert("Please sign in")
+        return
+      }
+
+      const reviewObj = {
+        username: user.username,
+        reviewText,
+        rating: tourRating,
+      }
+
+      const res = await fetch(`${BASE_URL}/review/${id}`, {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(reviewObj),
+      })
+
+      const result = await res.json()
+      if (!res.ok) {
+        return alert(result.message)
+      }
+
+      alert("Review submitted successfully!")
+      reviewMsgRef.current.value = ""
+      setTourRating(null)
+    } catch (error) {
+      alert(error.message)
+    }
   }
 
   useEffect(() => {
@@ -152,9 +186,9 @@ const TourDetails = () => {
                           <div className="w-100">
                             <div className="d-flex align-items-center justify-content-between">
                               <div>
-                                <h5>Hra</h5>
+                                <h5>{review.username}</h5>
                                 <p>
-                                  {new Date("2024-06-25").toLocaleDateString(
+                                  {new Date(review.createdAt).toLocaleDateString(
                                     "fr-FR",
                                     {
                                       weekday: "long",
@@ -166,42 +200,11 @@ const TourDetails = () => {
                                 </p>
                               </div>
                               <span className="d-flex align-items-center">
-                                5 <i className="ri-star-fill"></i>
+                                {review.rating} <i className="ri-star-fill"></i>
                               </span>
                             </div>
 
-                            <h6>Great Experience</h6>
-                          </div>
-                        </div>
-                      ))}
-                    </ListGroup>
-                    <ListGroup className="user__reviews">
-                      {reviews?.map((review) => (
-                        <div className="review__item">
-                          <img src={younes} alt="" />
-
-                          <div className="w-100">
-                            <div className="d-flex align-items-center justify-content-between">
-                              <div>
-                                <h5>Younes</h5>
-                                <p>
-                                  {new Date("2024-06-26").toLocaleDateString(
-                                    "fr-FR",
-                                    {
-                                      weekday: "long",
-                                      year: "numeric",
-                                      month: "long",
-                                      day: "numeric",
-                                    }
-                                  )}
-                                </p>
-                              </div>
-                              <span className="d-flex align-items-center">
-                                5 <i className="ri-star-fill"></i>
-                              </span>
-                            </div>
-
-                            <h6>Amazing Tour</h6>
+                            <h6>{review.reviewText}</h6>
                           </div>
                         </div>
                       ))}

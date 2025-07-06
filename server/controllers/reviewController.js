@@ -4,14 +4,14 @@ import Review from "../models/Review.js"
 // create a review
 export const createReview = async (req, res) => {
   const tourId = req.params.tourId
-  const newReview = new Review({ ...req.body })
+  const newReview = new Review({ ...req.body, productId: tourId })
   try {
     const savedReview = await newReview.save()
 
     //after creating a new review now we should update the reviews array of the tour
 
     await Tour.findByIdAndUpdate(tourId, {
-      $push: { reviews: savedReview._id }
+      $push: { reviews: savedReview._id },
     })
 
     res.status(200).json({
