@@ -8,10 +8,10 @@ import Subtitle                from "../shared/Subtitle"
 import SearchBar               from "../shared/SearchBar"
 import ServicesList            from "../services/ServicesList"
 import FeaturedTourList        from "../components/featured-tours/FeaturedTourList"
-import "../styles/home.css"
 import MasonryImagesGallery    from "../components/image-gallery/MasonryImagesGallery"
 import Testimonials            from "../components/testimonial/Testimonials"
-import Newsletter from "../shared/Newsletter"
+import Newsletter              from "../shared/Newsletter"
+import "../styles/home.css"
 
 const Home = () => {
   return (
@@ -45,7 +45,7 @@ const Home = () => {
             </div>
           </Col>
           <Col>
-            <div className="hero__img-box mt-4">
+            <div className="hero__video-box hero__img-box mt-4">
               <video src={heroVideo} controls />
             </div>
           </Col>
